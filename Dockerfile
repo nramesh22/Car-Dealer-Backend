@@ -1,0 +1,33 @@
+FROM composer:2 AS vendor
+
+WORKDIR /app
+
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+
+COPY . .
+RUN composer dump-autoload --optimize
+
+FROM php:8.2-cli
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        libzip-dev \
+        sqlite3 \
+        unzip \
+        zip \
+    && docker-php-ext-install pdo pdo_mysql pdo_sqlite \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY --from=vendor /app /app
+COPY docker/start.sh /usr/local/bin/start.sh
+
+RUN chmod +x /usr/local/bin/start.sh \
+    && chmod -R 775 storage bootstrap/cache
+
+EXPOSE 8000
+
+CMD ["/usr/local/bin/start.sh"]
