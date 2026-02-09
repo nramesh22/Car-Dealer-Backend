@@ -1,5 +1,15 @@
 FROM composer:2 AS vendor
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        libicu-dev \
+        libzip-dev \
+        unzip \
+        zip \
+    && docker-php-ext-install intl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY composer.json composer.lock ./
@@ -12,11 +22,12 @@ FROM php:8.2-cli
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        libicu-dev \
         libzip-dev \
         sqlite3 \
         unzip \
         zip \
-    && docker-php-ext-install pdo pdo_mysql pdo_sqlite \
+    && docker-php-ext-install intl pdo pdo_mysql pdo_sqlite \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
