@@ -1,4 +1,4 @@
-FROM php:8.2-cli AS vendor
+FROM php:8.3-cli AS vendor
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -22,7 +22,7 @@ RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoload
 COPY . .
 RUN composer dump-autoload --optimize
 
-FROM php:8.2-cli
+FROM php:8.3-cli
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
