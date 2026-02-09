@@ -1,14 +1,14 @@
 #!/bin/sh
 set -e
 
+# Ensure required envs exist even if the hosting provider doesn't inject them.
+export DB_CONNECTION="${DB_CONNECTION:-sqlite}"
+export DB_DATABASE="${DB_DATABASE:-/app/database/database.sqlite}"
+
 # Ensure SQLite database exists for first boot.
 if [ "${DB_CONNECTION}" = "sqlite" ]; then
   mkdir -p /app/database
-  if [ -n "${DB_DATABASE}" ]; then
-    touch "${DB_DATABASE}"
-  else
-    touch /app/database/database.sqlite
-  fi
+  touch "${DB_DATABASE}"
 fi
 
 php artisan storage:link || true
