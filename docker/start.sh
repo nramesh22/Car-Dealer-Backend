@@ -24,14 +24,13 @@ if [ -n "${FILAMENT_ADMIN_EMAIL}" ] && [ -n "${FILAMENT_ADMIN_PASSWORD}" ]; then
   $email = getenv("FILAMENT_ADMIN_EMAIL");
   $name = getenv("FILAMENT_ADMIN_NAME") ?: "Admin";
   $password = getenv("FILAMENT_ADMIN_PASSWORD");
-  $exists = App\\Models\\User::query()->where("email", $email)->exists();
-  if (!$exists) {
-    App\\Models\\User::create([
+  App\\Models\\User::updateOrCreate(
+    ["email" => $email],
+    [
       "name" => $name,
-      "email" => $email,
       "password" => Illuminate\\Support\\Facades\\Hash::make($password),
-    ]);
-  }
+    ]
+  );
   '
 fi
 
