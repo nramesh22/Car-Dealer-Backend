@@ -18,22 +18,7 @@ php artisan migrate --force
 # Create a Filament admin user when credentials are provided via env.
 if [ -n "${FILAMENT_ADMIN_EMAIL}" ] && [ -n "${FILAMENT_ADMIN_PASSWORD}" ]; then
   echo "Ensuring Filament admin user for ${FILAMENT_ADMIN_EMAIL}"
-  php -r '
-  require __DIR__ . "/vendor/autoload.php";
-  $app = require __DIR__ . "/bootstrap/app.php";
-  $app->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap();
-  $email = getenv("FILAMENT_ADMIN_EMAIL");
-  $name = getenv("FILAMENT_ADMIN_NAME") ?: "Admin";
-  $password = getenv("FILAMENT_ADMIN_PASSWORD");
-  App\\Models\\User::updateOrCreate(
-    ["email" => $email],
-    [
-      "name" => $name,
-      "password" => Illuminate\\Support\\Facades\\Hash::make($password),
-    ]
-  );
-  fwrite(STDOUT, "Filament admin user ensured\n");
-  '
+  php artisan app:ensure-filament-admin
 fi
 
 php artisan serve --host=0.0.0.0 --port=${PORT:-8000}

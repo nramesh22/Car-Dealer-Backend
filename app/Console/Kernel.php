@@ -22,6 +22,10 @@ class Kernel extends ConsoleKernel
     {
         $this->load(__DIR__.'/Commands');
 
+        $this->commands([
+            \App\Console\Commands\EnsureFilamentAdmin::class,
+        ]);
+
         require base_path('routes/console.php');
     }
 }
