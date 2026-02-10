@@ -6,6 +6,8 @@ services:
     plan: free
     autoDeploy: true
     envVars:
+      - key: APP_NAME
+        value: CarDealer Backend
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
@@ -27,4 +29,4 @@ services:
       - key: FILAMENT_ADMIN_EMAIL
         value: admin@admin.com
       - key: FILAMENT_ADMIN_PASSWORD
-        value: change-me
+        value: admin@2026
