@@ -22,3 +22,9 @@ services:
         value: /app/database/database.sqlite
       - key: FILESYSTEM_DISK
         value: public
+      - key: FILAMENT_ADMIN_NAME
+        value: Admin
+      - key: FILAMENT_ADMIN_EMAIL
+        value: admin@admin.com
+      - key: FILAMENT_ADMIN_PASSWORD
+        value: change-me
