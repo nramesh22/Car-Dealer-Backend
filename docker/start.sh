@@ -17,6 +17,7 @@ php artisan migrate --force
 
 # Create a Filament admin user when credentials are provided via env.
 if [ -n "${FILAMENT_ADMIN_EMAIL}" ] && [ -n "${FILAMENT_ADMIN_PASSWORD}" ]; then
+  echo "Ensuring Filament admin user for ${FILAMENT_ADMIN_EMAIL}"
   php -r '
   require __DIR__ . "/vendor/autoload.php";
   $app = require __DIR__ . "/bootstrap/app.php";
@@ -31,6 +32,7 @@ if [ -n "${FILAMENT_ADMIN_EMAIL}" ] && [ -n "${FILAMENT_ADMIN_PASSWORD}" ]; then
       "password" => Illuminate\\Support\\Facades\\Hash::make($password),
     ]
   );
+  fwrite(STDOUT, "Filament admin user ensured\n");
   '
 fi
 
